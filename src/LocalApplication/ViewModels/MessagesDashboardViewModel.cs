@@ -10,8 +10,6 @@ namespace LocalApplication.ViewModels;
 
 public class MessagesDashboardViewModel : ViewModelBase
 {
-    public ObservableCollection<Message> Messages { get; private set; }
-
     private string _clientId = "No connection made";
     private string _connectionId = "No connection made";
     private string _clientMessage = string.Empty;
@@ -53,10 +51,9 @@ public class MessagesDashboardViewModel : ViewModelBase
 
     public MessagesDashboardViewModel(SignalRMessagingService messagingService, string clientId)
     {
-        SendMessageCommand = new SendMessageCommand(this, messagingService);
         ConnectionId = messagingService.ConnectionId;
         ClientId = clientId;
-        Messages = new ObservableCollection<Message>();
+        SendMessageCommand = new SendMessageCommand(this, messagingService);
         RegisterEventHandlers(messagingService);
     }
 
