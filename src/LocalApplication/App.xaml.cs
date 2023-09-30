@@ -20,7 +20,6 @@ namespace LocalApplication
             StartupArgumentsService startupArgumentsService = new();
             var startupArguments = startupArgumentsService.ParseStartupArguments(e.Args);
             startupArguments.TryGetValue("ClientId", out string startupClientId);
-            startupClientId = "lol";
 
             if (startupClientId == null)
             {
