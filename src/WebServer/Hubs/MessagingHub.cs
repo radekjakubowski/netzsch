@@ -1,18 +1,19 @@
 ﻿using Common;
 using Microsoft.AspNetCore.SignalR;
 using WebServer.Hubs.Abstractions;
+using WebServer.Persistence.Abstractions;
 
 namespace WebServer.Hubs
 {
     public class MessagingHub : Hub<IMessagingHub>
     {
         private readonly ILogger<MessagingHub> _logger;
-        private Dictionary<string, string> _clientMessages = new();
-        private readonly object _object = new object();
+        private readonly IMessagesStore _messagesStore;
 
-        public MessagingHub(ILogger<MessagingHub> logger)
+        public MessagingHub(ILogger<MessagingHub> logger, IMessagesStore messagesStore)
         {
             _logger = logger;
+            _messagesStore = messagesStore;
         }
 
         public override async Task OnConnectedAsync()
@@ -30,26 +31,10 @@ namespace WebServer.Hubs
         public async Task SendMessageToServer(Message message)
         {
             _logger.LogInformation($"Obtained message {message.Text} from client {message.ClientId}");
+            _messagesStore.StoreMessage(message);
 
-            lock (_object)
-            {
-                if (!_clientMessages.ContainsKey(message.ClientId)) 
-                {
-                    _clientMessages.Add(message.ClientId, message.Text);
-                }
-
-                if (_clientMessages.ContainsKey(message.ClientId))
-                {
-                    _clientMessages[message.ClientId] = message.Text;
-                }
-
-                if (string.IsNullOrWhiteSpace(message.Text) && _clientMessages.ContainsKey(message.ClientId))
-                {
-                    _clientMessages.Remove(message.ClientId);
-                }
-            }
-
-            await Clients.All.ReceiveClientMessages(_clientMessages);
+            var messages = _messagesStore.GetMessages();
+            await Clients.All.ReceiveClientMessages(messages);
         }
     }
 }

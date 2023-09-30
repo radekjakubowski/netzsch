@@ -1,12 +1,13 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using WebServer.Hubs;
+using WebServer.Persistence;
+using WebServer.Persistence.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<IMessagesStore, InMemoryMessageStore>();
 
 var app = builder.Build();
 
