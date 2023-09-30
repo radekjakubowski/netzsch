@@ -1,10 +1,9 @@
 ﻿using Common;
 
-namespace WebServer.Hubs.Abstractions
+namespace WebServer.Hubs.Abstractions;
+
+public interface IMessagingHub
 {
-    public interface IMessagingHub
-    {
-        Task ReceiveClientMessages(Dictionary<string, string> messages);
-        Task ReceiveServerMessage(Message message);
-    }
+    Task ReceiveClientMessages(Dictionary<string, string> messages);
+    Task ReceiveServerMessage(Message message);
 }

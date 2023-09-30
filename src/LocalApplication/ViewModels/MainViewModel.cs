@@ -1,12 +1,11 @@
-﻿namespace LocalApplication.ViewModels
-{
-    internal class MainViewModel
-    {
-        public MessagesDashboardViewModel MessagesDashboardViewModel { get; }
+﻿namespace LocalApplication.ViewModels;
 
-        public MainViewModel(MessagesDashboardViewModel messagesDashboardViewModel)
-        {
-            MessagesDashboardViewModel = messagesDashboardViewModel;
-        }
+internal class MainViewModel
+{
+    public MessagesDashboardViewModel MessagesDashboardViewModel { get; }
+
+    public MainViewModel(MessagesDashboardViewModel messagesDashboardViewModel)
+    {
+        MessagesDashboardViewModel = messagesDashboardViewModel;
     }
 }

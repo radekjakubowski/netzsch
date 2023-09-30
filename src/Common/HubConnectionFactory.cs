@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Common
+namespace Common;
+
+public static class HubConnectionFactory
 {
-    public static class HubConnectionFactory
+    public static HubConnection CreateHubConnection()
     {
-        public static HubConnection CreateHubConnection()
-        {
-            return new HubConnectionBuilder()
-                .WithUrl($"{WebServerConstants.WebServerUrl}/messaging-hub")
-                .WithAutomaticReconnect()
-                .Build();
-        }
+        return new HubConnectionBuilder()
+            .WithUrl($"{WebServerConstants.WebServerUrl}/messaging-hub")
+            .WithAutomaticReconnect()
+            .Build();
     }
 }

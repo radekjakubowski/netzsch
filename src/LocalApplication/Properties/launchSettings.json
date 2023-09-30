@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LocalApplication": {
+      "commandName": "Project",
+      "commandLineArgs": "ClientId=TestClient"
+    }
+  }
+}

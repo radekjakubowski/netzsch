@@ -22,8 +22,8 @@
 <div class="mt-3 d-flex flex-column">
     <h3>Client messages to server</h3>
     @if (ClientMessages.Any())
-    {
-        <table class="table">
+{
+    <table class="table">
             <thead>
             <tr>
                     <th class="col-2">ClientId</th>
@@ -32,67 +32,67 @@
             </thead>
             <tbody>
                     @foreach (var kvp in ClientMessages)
-                    {
-                            <tr>
+                {
+                        <tr>
                                 <td>@kvp.Key</td>
                                 <td>@kvp.Value</td>
                             </tr>
-                    }
+                }
             </tbody>
         </table>
-    } 
-    else {
-        <p>No client messages! Please, provide some input in one of local applications instances</p>
-    }
+} 
+else {
+    <p>No client messages! Please, provide some input in one of local applications instances</p>
+}
     
 </div>
 
 @code {
-    private string _serverMessage = string.Empty;
-    private HubConnection? hubConnection;
+private string _serverMessage = string.Empty;
+private HubConnection? hubConnection;
 
-    public Dictionary<string, string> ClientMessages { get; set; } = new();
+public Dictionary<string, string> ClientMessages { get; set; } = new();
 
-    private async Task ServerMessageChanged(ChangeEventArgs e)
+private async Task ServerMessageChanged(ChangeEventArgs e)
+{
+    _serverMessage = e.Value as string;
+
+    await BroadcastServerMessage();
+}
+
+private async Task BroadcastServerMessage()
+{
+    var message = new Message { ClientId = "web-server", Text = _serverMessage };
+    await messagingHub.Clients.All.ReceiveServerMessage(message);
+}
+
+protected override async Task OnInitializedAsync()
+{
+    hubConnection = HubConnectionFactory.CreateHubConnection();
+    hubConnection.On<Dictionary<string, string>>("ReceiveClientMessages", UpdateClientMessages);
+
+    await hubConnection.StartAsync();
+    await base.OnInitializedAsync();
+}
+
+public string? ConnectionId => hubConnection?.ConnectionId;
+
+private void UpdateClientMessages(Dictionary<string, string> messages)
+{
+    ClientMessages = messages;
+    RefreshView();
+}
+
+public async ValueTask DisposeAsync()
+{
+    if (hubConnection is not null)
     {
-        _serverMessage = e.Value as string;
-
-        await BroadcastServerMessage();
+        await hubConnection.DisposeAsync();
     }
+}
 
-    private async Task BroadcastServerMessage()
-    {
-        var message = new Message { ClientId = "web-server", Text = _serverMessage };
-        await messagingHub.Clients.All.ReceiveServerMessage(message);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        hubConnection = HubConnectionFactory.CreateHubConnection();
-        hubConnection.On<Dictionary<string, string>>("ReceiveClientMessages", UpdateClientMessages);
-
-        await hubConnection.StartAsync();
-        await base.OnInitializedAsync();
-    }
-
-    public string? ConnectionId => hubConnection?.ConnectionId;
-
-    private void UpdateClientMessages(Dictionary<string, string> messages)
-    {
-        ClientMessages = messages;
-        RefreshView();
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (hubConnection is not null)
-        {
-            await hubConnection.DisposeAsync();
-        }
-    }
-
-    private void RefreshView()
-    {
-        InvokeAsync(() => StateHasChanged());
-    }
+private void RefreshView()
+{
+    InvokeAsync(() => StateHasChanged());
+}
 }

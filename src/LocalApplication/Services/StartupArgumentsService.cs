@@ -1,27 +1,26 @@
 ﻿using System.Collections.Generic;
 
-namespace LocalApplication.Services
+namespace LocalApplication.Services;
+
+public class StartupArgumentsService
 {
-    public class StartupArgumentsService
+    public Dictionary<string, string> ParseStartupArguments(string[] arguments)
     {
-        public Dictionary<string, string> ParseStartupArguments(string[] arguments)
+        Dictionary<string, string> startupArguments = new Dictionary<string, string>();
+
+        foreach (string arg in arguments)
         {
-            Dictionary<string, string> startupArguments = new Dictionary<string, string>();
+            string[] parts = arg.Split('=');
 
-            foreach (string arg in arguments)
+            if (parts.Length == 2)
             {
-                string[] parts = arg.Split('=');
+                string key = parts[0];
+                string value = parts[1];
 
-                if (parts.Length == 2)
-                {
-                    string key = parts[0];
-                    string value = parts[1];
-
-                    startupArguments[key] = value;
-                }
+                startupArguments[key] = value;
             }
-
-            return startupArguments;
         }
+
+        return startupArguments;
     }
 }

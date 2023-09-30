@@ -3,35 +3,34 @@ using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;
 
-namespace LocalApplication.Services
+namespace LocalApplication.Services;
+
+public class SignalRMessagingService
 {
-    public class SignalRMessagingService
+    private readonly HubConnection _connection;
+    public event Action<Message> MessageReceived;
+
+    public string ConnectionId { get; set; }
+
+    public SignalRMessagingService(HubConnection connection)
     {
-        private readonly HubConnection _connection;
-        public event Action<Message> MessageReceived;
+        _connection = connection;
+        RegisterEventHandlers();
+    }
 
-        public string ConnectionId { get; set; }
+    private void RegisterEventHandlers()
+    {
+        _connection.On<Message>("ReceiveServerMessage", (message) => MessageReceived?.Invoke(message));
+    }
 
-        public SignalRMessagingService(HubConnection connection)
-        {
-            _connection = connection;
-            RegisterEventHandlers();
-        }
+    public async Task Connect()
+    {
+        await _connection.StartAsync();
+        ConnectionId = _connection.ConnectionId;
+    }
 
-        private void RegisterEventHandlers()
-        {
-            _connection.On<Message>("ReceiveServerMessage", (message) => MessageReceived?.Invoke(message));
-        }
-
-        public async Task Connect()
-        {
-            await _connection.StartAsync();
-            ConnectionId = _connection.ConnectionId;
-        }
-
-        public async Task SendMessageToServer(Message message)
-        {
-            await _connection.SendAsync("SendMessageToServer", message);
-        }
+    public async Task SendMessageToServer(Message message)
+    {
+        await _connection.SendAsync("SendMessageToServer", message);
     }
 }

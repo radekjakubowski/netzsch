@@ -1,7 +1,6 @@
-﻿namespace Common
+﻿namespace Common;
+
+public static class WebServerConstants
 {
-    public static class WebServerConstants
-    {
-        public const string WebServerUrl = "http://localhost:5078";
-    }
+    public const string WebServerUrl = "http://localhost:5078";
 }
