@@ -19,7 +19,7 @@ public class MessagesDashboardViewModel : ViewModelBase
         set 
         {
             SetProperty(ref _clientMessage, value);
-            Task.Run(() => DispatchClientMessage());
+            Task.Run(DispatchClientMessage);
         }
     }
 

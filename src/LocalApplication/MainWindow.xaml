@@ -11,7 +11,7 @@
     WindowStartupLocation="CenterScreen"
     d:DataContext="{d:DesignInstance vm:MainViewModel}"
 >
-    <Grid>
+    <Grid Background="DarkCyan">
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <views:MessagesDashboardView Margin="10" DataContext="{Binding MessagesDashboardViewModel}" />
         </ScrollViewer>
