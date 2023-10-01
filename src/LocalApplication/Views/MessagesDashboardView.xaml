@@ -30,11 +30,11 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Vertical">
-                    <TextBlock FontSize="14" Name="clientIdLabel" Text="ClientId" Width="500" HorizontalAlignment="Left"/>
+                    <TextBlock FontSize="14" Name="clientIdLabel" Text="ClientId" Foreground="White" Width="500" HorizontalAlignment="Left"/>
                     <TextBox FontSize="14" Name="clientIdTextBox" Text="{Binding ClientId, Mode=TwoWay}" HorizontalAlignment="Right" Width="500" IsReadOnly="True"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Vertical">
-                    <TextBlock FontSize="14" Name="connectionIdLabel" Text="ConnectionId" Width="500" HorizontalAlignment="Left"/>
+                    <TextBlock FontSize="14" Name="connectionIdLabel" Text="ConnectionId" Foreground="White" Width="500" HorizontalAlignment="Left"/>
                     <TextBox FontSize="14" Name="connectionIdTextBox" Text="{Binding ConnectionId, Mode=TwoWay}" HorizontalAlignment="Right" Width="500" IsReadOnly="True"/>
                 </StackPanel>
             </Grid>
@@ -51,11 +51,11 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Vertical">
-                    <TextBlock FontSize="14" Name="clientServerMessageLabel" Text="Client to server message" Width="500" HorizontalAlignment="Left"/>
+                    <TextBlock FontSize="14" Name="clientServerMessageLabel" Text="Client to server message" Foreground="White" Width="500" HorizontalAlignment="Left"/>
                     <TextBox FontSize="14" Name="clientServerMessageTextBox" Text="{Binding ClientMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Width="500"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Vertical">
-                    <TextBlock FontSize="14" Name="serverClientMessageLabel" Text="Server to client message" Width="500" HorizontalAlignment="Left"/>
+                    <TextBlock FontSize="14" Name="serverClientMessageLabel" Text="Server to client message" Foreground="White" Width="500" HorizontalAlignment="Left"/>
                     <TextBox FontSize="14" Name="serverClientMessageTextBox" Text="{Binding ServerMessage, Mode=TwoWay}" HorizontalAlignment="Right" Width="500" IsReadOnly="True"/>
                 </StackPanel>
             </Grid>
