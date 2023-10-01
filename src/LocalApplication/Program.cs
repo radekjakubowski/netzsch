@@ -18,6 +18,7 @@ public class Program
             {
                 services.AddSingleton<App>();
                 services.AddSingleton<MainWindow>();
+
                 services.AddTransient(sp =>
                 {
                     var hubConnection = HubConnectionFactory.CreateHubConnection();
