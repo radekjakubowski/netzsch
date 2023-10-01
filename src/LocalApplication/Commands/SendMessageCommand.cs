@@ -1,6 +1,8 @@
 ﻿using Common;
 using LocalApplication.Services;
+using LocalApplication.Services.Abstractions;
 using LocalApplication.ViewModels;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Input;
 
@@ -9,7 +11,9 @@ namespace LocalApplication.Commands;
 public class SendMessageCommand : ICommand
 {
     private readonly MessagesDashboardViewModel _viewModel;
-    private SignalRMessagingService _messagingService;
+    private readonly SignalRMessagingService _messagingService;
+    private readonly ILogger<SendMessageCommand> _logger;
+    
 
     public SendMessageCommand(MessagesDashboardViewModel viewModel, SignalRMessagingService messagingService)
     {
@@ -33,7 +37,7 @@ public class SendMessageCommand : ICommand
         } 
         catch (Exception)
         {
-
+            _logger.LogError("Error while sending message to server");
         }
     }
 }

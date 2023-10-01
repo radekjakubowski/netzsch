@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace LocalApplication.Services;
 
-public class SignalRMessagingService
-{
+public class SignalRMessagingService 
+{ 
     private readonly HubConnection _connection;
     public event Action<Message> MessageReceived;
 
@@ -15,18 +15,13 @@ public class SignalRMessagingService
     public SignalRMessagingService(HubConnection connection)
     {
         _connection = connection;
+        ConnectionId = _connection.ConnectionId;
         RegisterEventHandlers();
     }
 
     private void RegisterEventHandlers()
     {
         _connection.On<Message>("ReceiveServerMessage", (message) => MessageReceived?.Invoke(message));
-    }
-
-    public async Task Connect()
-    {
-        await _connection.StartAsync();
-        ConnectionId = _connection.ConnectionId;
     }
 
     public async Task SendMessageToServer(Message message)

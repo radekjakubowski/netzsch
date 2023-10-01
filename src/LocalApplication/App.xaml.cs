@@ -1,7 +1,10 @@
 ﻿using Common;
 using LocalApplication.Services;
+using LocalApplication.Services.Abstractions;
 using LocalApplication.ViewModels;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows;
 
@@ -12,37 +15,25 @@ namespace LocalApplication;
 /// </summary>
 public partial class App : Application
 {
+    private readonly IServiceProvider _sp;
+    private readonly ILogger<App> _logger;
+
+    public App(ILogger<App> logger, IServiceProvider sp)
+    {
+        _logger = logger;
+        _sp = sp;
+    }
+
     protected override async void OnStartup(StartupEventArgs e)
     {
-        StartupArgumentsService startupArgumentsService = new();
-        var startupArguments = startupArgumentsService.ParseStartupArguments(e.Args);
-        startupArguments.TryGetValue("ClientId", out string startupClientId);
-
-        if (startupClientId == null)
-        {
-            throw new ArgumentNullException($"{nameof(startupClientId)} cannot be null");
-        }
-
-        HubConnection connection = HubConnectionFactory.CreateHubConnection();
-
-        SignalRMessagingService messagingService = new SignalRMessagingService(connection);
-
-        try
-        {
-            await messagingService.Connect();
-        }
-        catch (Exception)
-        {
-            throw new ApplicationException("Couldn't connect to signalR hub");
-        }
-
-        var messagesDashboardViewModel = new MessagesDashboardViewModel(messagingService, startupClientId);
+        var messagesDashboardViewModel = _sp.GetRequiredService<MessagesDashboardViewModel>();
 
         MainWindow window = new MainWindow
         {
             DataContext = new MainViewModel(messagesDashboardViewModel)
         };
 
+        _logger.LogInformation("Showing client app window");
         window.Show();
     }
 }

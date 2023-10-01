@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using LocalApplication.Services.Abstractions;
+using System.Collections.Generic;
 
 namespace LocalApplication.Services;
 
-public class StartupArgumentsService
+public class StartupArgumentsService : IStartupArgumentsService
 {
-    public Dictionary<string, string> ParseStartupArguments(string[] arguments)
+    public Dictionary<string, string> ParseStartupArguments(string[] args)
     {
         Dictionary<string, string> startupArguments = new Dictionary<string, string>();
 
-        foreach (string arg in arguments)
+        foreach (string arg in args)
         {
             string[] parts = arg.Split('=');
 

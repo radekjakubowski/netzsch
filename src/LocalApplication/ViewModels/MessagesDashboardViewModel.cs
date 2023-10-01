@@ -1,8 +1,6 @@
 ﻿using Common;
 using LocalApplication.Commands;
 using LocalApplication.Services;
-using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 

@@ -32,12 +32,12 @@
             </thead>
             <tbody>
                     @foreach (var kvp in ClientMessages)
-                {
-                        <tr>
+            {
+                    <tr>
                                 <td>@kvp.Key</td>
                                 <td>@kvp.Value</td>
                             </tr>
-                }
+            }
             </tbody>
         </table>
 } 
@@ -55,44 +55,44 @@ public Dictionary<string, string> ClientMessages { get; set; } = new();
 
 private async Task ServerMessageChanged(ChangeEventArgs e)
 {
-    _serverMessage = e.Value as string;
+_serverMessage = e.Value as string;
 
-    await BroadcastServerMessage();
+await BroadcastServerMessage();
 }
 
 private async Task BroadcastServerMessage()
 {
-    var message = new Message { ClientId = "web-server", Text = _serverMessage };
-    await messagingHub.Clients.All.ReceiveServerMessage(message);
+var message = new Message { ClientId = "web-server", Text = _serverMessage };
+await messagingHub.Clients.All.ReceiveServerMessage(message);
 }
 
 protected override async Task OnInitializedAsync()
 {
-    hubConnection = HubConnectionFactory.CreateHubConnection();
-    hubConnection.On<Dictionary<string, string>>("ReceiveClientMessages", UpdateClientMessages);
+hubConnection = HubConnectionFactory.CreateHubConnection();
+hubConnection.On<Dictionary<string, string>>("ReceiveClientMessages", UpdateClientMessages);
 
-    await hubConnection.StartAsync();
-    await base.OnInitializedAsync();
+await hubConnection.StartAsync();
+await base.OnInitializedAsync();
 }
 
 public string? ConnectionId => hubConnection?.ConnectionId;
 
 private void UpdateClientMessages(Dictionary<string, string> messages)
 {
-    ClientMessages = messages;
-    RefreshView();
+ClientMessages = messages;
+RefreshView();
 }
 
 public async ValueTask DisposeAsync()
 {
-    if (hubConnection is not null)
-    {
-        await hubConnection.DisposeAsync();
-    }
+if (hubConnection is not null)
+{
+    await hubConnection.DisposeAsync();
+}
 }
 
 private void RefreshView()
 {
-    InvokeAsync(() => StateHasChanged());
+InvokeAsync(() => StateHasChanged());
 }
 }
